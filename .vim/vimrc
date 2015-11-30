@@ -1,0 +1,169 @@
+"" vim Plug manager
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-plug'
+Plug 'junegunn/vim-easy-align'
+
+"Plug 'junegunn/seoul256.vim'
+"Plug 'junegunn/goyo.vim'
+"Plug 'junegunn/limelight.vim'
+Plug 'NLKNguyen/papercolor-theme'
+
+
+
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'osyo-manga/vim-over'
+
+Plug 'https://github.com/sjl/vitality.vim.git'
+Plug 'https://github.com/vim-scripts/zoomwintab.vim.git'
+
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'https://github.com/jistr/vim-nerdtree-tabs.git'
+Plug 'https://github.com/ddollar/nerdcommenter.git'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
+Plug 'https://github.com/ervandew/supertab.git'
+
+
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'nickhutchinson/ctrlp-luamatcher'
+Plug 'rizzatti/dash.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+""Multi file search
+Plug 'https://github.com/wincent/ferret.git'
+Plug 'https://github.com/tpope/vim-dispatch.git'
+
+""Neo complete need to recheck to install lua
+"Plug 'https://github.com/Shougo/neocomplete.vim.git'
+Plug 'https://github.com/scrooloose/syntastic.git'
+
+Plug 'https://github.com/tomtom/tlib_vim.git'
+Plug 'https://github.com/mbbill/undotree.git'
+Plug 'bling/vim-airline'
+Plug 'elixir-lang/vim-elixir'
+Plug 'ktonga/vim-follow-my-lead'
+
+""buffer windows
+Plug 'https://github.com/jeetsukumaran/vim-buffergator.git'
+
+
+"" GIT Plugins
+Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'https://github.com/tpope/vim-git.git'
+Plug 'https://github.com/taq/vim-git-branch-info.git'
+Plug 'https://github.com/rhysd/committia.vim.git'
+Plug 'airblade/vim-gitgutter'
+
+
+""Javascript
+Plug 'pangloss/vim-javascript'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'dsawardekar/ember.vim'
+
+  " Optional:
+Plug 'honza/vim-snippets'
+Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
+Plug 'JamshedVesuna/vim-markdown-preview'
+
+call plug#end()
+" The caveat is that you should *never* use PlugUpgrade
+delc PlugUpgrade
+
+""markdown
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_browser='Google Chrome'
+
+let g:ctrlp_match_func  = {'match' : 'ctrlp_luamatcher#Match'}
+
+"ColorScheme
+" Unified color scheme (default: dark)
+"colo seoul256
+"set t_Co=256 
+
+" Switch
+set background=dark
+colorscheme PaperColor
+set number
+set laststatus=2
+
+""airline
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+
+""Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
+""UndoTree
+nnoremap <F7> :UndotreeToggle<cr>
+
+"Nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+
+"NerdTreetab
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+"let g:nerdtree_tabs_open_on_console_startup=1
+"let g:nerdtree_tabs_open_on_gui_startup=0
+
+
+
+""Committiavim
+" You can get the information about the windows with first argument as a dictionary.
+"
+"   KEY              VALUE                      AVAILABILITY
+"-----------------------------------------------------------------------------------
+"   vcs            : vcs type (e.g. 'git')   -> all hooks
+"   edit_winnr     : winnr of edit window    -> ditto
+"   edit_bufnr     : bufnr of edit window    -> ditto
+"   diff_winnr     : winnr of diff window    -> ditto
+"   diff_bufnr     : bufnr of diff window    -> ditto
+"   status_winnr   : winnr of status window  -> all hooks except for 'diff_open' hook
+"   status_bufnr   : bufnr of status window  -> ditto
+
+let g:committia_hooks = {}
+function! g:committia_hooks.edit_open(info)
+    " Additional settings
+    setlocal spell
+
+    " If no commit message, start with insert mode
+    if a:info.vcs ==# 'git' && getline(1) ==# ''
+        startinsert
+    end
+
+    " Scroll the diff window from insert mode
+    " Map <C-n> and <C-p>
+    imap <buffer><C-n> <Plug>(committia-scroll-diff-down-half)
+    imap <buffer><C-p> <Plug>(committia-scroll-diff-up-half)
+
+endfunction
