@@ -12,9 +12,8 @@ Plug 'junegunn/vim-easy-align'
 "Plug 'junegunn/seoul256.vim'
 "Plug 'junegunn/goyo.vim'
 "Plug 'junegunn/limelight.vim'
-Plug 'NLKNguyen/papercolor-theme'
-
-
+"Plug 'NLKNguyen/papercolor-theme'
+Plug 'https://github.com/tomasr/molokai.git'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -87,13 +86,18 @@ let g:ctrlp_match_func  = {'match' : 'ctrlp_luamatcher#Match'}
 "ColorScheme
 " Unified color scheme (default: dark)
 "colo seoul256
-"set t_Co=256 
+set t_Co=256 
 
 " Switch
+let g:molokai_original = 0
 set background=dark
-colorscheme PaperColor
+colorscheme molokai
 set number
 set laststatus=2
+
+
+
+
 
 ""airline
 let g:airline#extensions#tabline#enabled = 1
